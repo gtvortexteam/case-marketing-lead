@@ -1,9 +1,7 @@
 document.documentElement.classList.remove('no-js');
-/* Поведение страницы, ТЗ 10.1. ES2020, без библиотек. */
 (() => {
   'use strict';
 
-  // Строки интерфейса только из ТЗ 7.3.
   const TXT = {
     expand: 'Развернуть всё',
     collapse: 'Свернуть детали',
@@ -43,7 +41,6 @@ document.documentElement.classList.remove('no-js');
 
   const isRendered = (el) => el.getClientRects().length > 0;
 
-  // Без плавной прокрутки.
   function jump(fn) {
     const s = html.style;
     const prev = s.scrollBehavior;
@@ -91,7 +88,6 @@ document.documentElement.classList.remove('no-js');
     if (tasks.has('toc')) updateCurrent();
   }
 
-  /* 1. Хэш */
   function revealTarget(target) {
     let changed = false;
     const open = (d) => { if (!d.open) { d.open = true; changed = true; } };
@@ -123,7 +119,6 @@ document.documentElement.classList.remove('no-js');
     }
     const link = el.closest('a[href^="#"]');
     if (!link) return;
-    // До перехода: повторный клик не даёт hashchange.
     const target = targetFromHref(link.getAttribute('href'));
     if (target) revealTarget(target);
     if (dialog && dialog.contains(link)) closeDialog();
@@ -139,13 +134,11 @@ document.documentElement.classList.remove('no-js');
     }
   }
 
-  /* 2. Развернуть всё */
   const allOpen = () => folds.length > 0 && folds.every((d) => d.open);
 
   function syncExpandButtons() {
     const on = allOpen();
     const text = on ? TXT.collapse : TXT.expand;
-    // Без aria-pressed: состояние в надписи.
     expandButtons.forEach((b) => {
       b.toggleAttribute('data-open', on);
       const label = b.querySelector('[data-label]') || b;
@@ -162,7 +155,6 @@ document.documentElement.classList.remove('no-js');
     syncExpandButtons();
   }
 
-  // Держим место чтения.
   function keepPlace(collapsing, mutate) {
     const anchor = findAnchor(collapsing);
     const before = anchor ? anchor.el.getBoundingClientRect().top : 0;
@@ -214,7 +206,6 @@ document.documentElement.classList.remove('no-js');
     return WIDE_GAP;
   }
 
-  /* 3. Печать */
   let printSnapshot = null;
   let printScrollY = 0;
 
@@ -232,7 +223,6 @@ document.documentElement.classList.remove('no-js');
     jump(() => window.scrollTo(0, printScrollY));
   }
 
-  /* 4. Оглавление */
   const tocLinks = new Map();
   const headings = [];
   let marked = { links: [], items: [] };
@@ -254,7 +244,6 @@ document.documentElement.classList.remove('no-js');
       const io = new IntersectionObserver(() => schedule('toc'), { rootMargin: TOC_ROOT_MARGIN });
       headings.forEach((h) => io.observe(h));
     }
-    // Страховка для далёких переходов.
     let settle = 0;
     window.addEventListener('scroll', () => {
       clearTimeout(settle);
@@ -320,7 +309,6 @@ document.documentElement.classList.remove('no-js');
     if (sc) ensureVisible(a, sc, false);
   }
 
-  /* 5. Диалог */
   let pressStartedOnDialog = false;
   const isDialogOpen = () => !!dialog && dialog.hasAttribute('open');
 
@@ -371,7 +359,6 @@ document.documentElement.classList.remove('no-js');
     if (wide.addEventListener) wide.addEventListener('change', (e) => { if (e.matches) closeDialog(); });
   }
 
-  /* 6. Широкие таблицы */
   function makeHint() {
     const p = document.createElement('p');
     p.className = 'table-hint';
@@ -387,7 +374,6 @@ document.documentElement.classList.remove('no-js');
       const hasHint = !!prev && prev.classList.contains('table-hint');
       if (wide[i] && !hasHint) t.before(makeHint());
       else if (!wide[i] && hasHint) prev.remove();
-      // Tab только у широких.
       if (wide[i]) t.setAttribute('tabindex', '0');
       else t.removeAttribute('tabindex');
     });

@@ -1,12 +1,3 @@
-/* Экспонаты ответа: 2.5 лендинг, 5.1 объявление, 5.2 баннер, 5.3 раскадровка, 5.4 главная, 5.5 пресс-релиз.
-   Рамка и подписи говорят голосом отчёта: токены style.css, у каждого запасное значение.
-   Всё внутри рамок говорит голосом бренда NNN и держит светлую палитру в обеих темах.
-   Префиксы: exhibit общая рамка, nnn- элементы бренда, ex25- лендинг, ex51- объявление,
-   ex52- баннер (полоса .banner-strip), ex53- раскадровка, ex54- главная, release и ph пресс-релиз.
-   Шрифты только системные, внешних запросов нет. */
-
-/* 1. Общая рамка */
-
 .exhibit {
   --n-bg: #FFFFFF;
   --n-canvas: #F2F4F7;
@@ -40,8 +31,6 @@
   color: var(--muted, #5E6573);
 }
 
-/* Свой цвет фокуса только у белых поверхностей NNN: светлый фокус тёмной темы на белом не виден (9.12.0).
-   Сцена и лист пресс-релиза следуют теме, у них фокус темы, иначе в тёмной теме кольцо сливается с фоном. */
 .nnn-browser, .ex51-card, .ex52-frame { --focus: #2340C8; }
 
 .exhibit__stage {
@@ -56,10 +45,7 @@
 @media (max-width: 767px) {
   .exhibit__stage { margin-inline: calc(-1 * var(--gutter, 16px)); border-radius: 0; }
 }
-/* число с единицей не рвётся по строкам; символы текста не меняются */
 .exhibit .ex-nw { white-space: nowrap; }
-
-/* 2. Рамка браузера и страница NNN (2.5 и 5.4) */
 
 .nnn-browser {
   container-type: inline-size;
@@ -263,8 +249,6 @@
 }
 .nnn-note__lead { font-weight: 700; }
 
-/* Порог 780, не 820 и не 880: на 1280 с обычной полосой прокрутки Windows сцена даёт 815-817 px,
-   а раскладка 1280+ по 9.14 уже в две колонки и три кадра баннера в ряд. На 768 сцена около 640 px. */
 @container (min-width: 780px) {
   .nnn-top { padding: 20px 48px; }
   .nnn-hero {
@@ -279,8 +263,6 @@
   .nnn-screen { padding: 56px 48px 64px; }
   .nnn-note { margin-top: 32px; }
 }
-
-/* 2.5: второй экран лендинга */
 
 .ex25-cards { display: grid; gap: 12px; margin-top: 24px; }
 .ex25-card { padding: 24px; border-radius: var(--n-r-l); background: var(--n-canvas); }
@@ -319,8 +301,6 @@
   .ex25-steps { margin-top: 40px; }
   .ex25-steps__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 }
-
-/* 5.4: главная NNN */
 
 .ex54-badge {
   display: inline-flex;
@@ -389,8 +369,6 @@
   .ex54-card--sell, .ex54-card--big { grid-column: span 5; }
 }
 
-/* 3. Объявление в поиске (5.1) */
-
 .ex51 { display: grid; justify-items: start; gap: 10px; }
 .ex51-group { color: var(--ink-2, #3A3F4A); font: 600 var(--fs-small, .8125rem)/1.4 var(--x-text); }
 .ex51-group--next { margin-top: 22px; }
@@ -444,7 +422,6 @@
 .ex51-link__d { margin-top: 2px; color: #555555; font-size: 13px; line-height: 1.4; }
 .ex51-vcard { margin-top: 14px; color: #6B6B6B; font-size: 13px; line-height: 1.45; }
 .ex51-ph { text-decoration: underline dashed; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-/* счётчики символов из таблицы ответа: пометка на полях, не часть объявления */
 .ex51-n {
   justify-self: end;
   padding: 1px 5px;
@@ -473,9 +450,6 @@
 @media (max-width: 479px) {
   .ex51-card { padding: 16px; }
 }
-
-/* 4. Баннер 300×600, три кадра без скриптов (5.2).
-   Внутри кадра размеры в долях ширины: 1 единица = 1 px при ширине кадра 300 px. */
 
 .ex52 { container-type: inline-size; }
 .banner-strip {
@@ -519,7 +493,6 @@
   hyphens: manual;
 }
 .ex52-frame--night { background: #15171D; color: #F5F6F8; box-shadow: 0 0 0 1px rgb(255 255 255 / .06); }
-/* В тёмной теме сцена почти того же тона, что ночной кадр: край кадра заметнее */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .ex52-frame--night { box-shadow: 0 0 0 1px rgb(255 255 255 / .14); }
 }
@@ -634,8 +607,6 @@
   line-height: 1.3;
 }
 
-/* 5. Раскадровка ролика, шкала 30 секунд (5.3) */
-
 .ex53 {
   container-type: inline-size;
   padding: clamp(16px, 3vw, 28px);
@@ -707,8 +678,6 @@
   .ex53-time { flex-direction: column; gap: 2px; }
 }
 
-/* 6. Лист пресс-релиза (5.5). Текст внутри - текст ответа, меняется только оформление. */
-
 .release {
   box-sizing: border-box;
   max-width: 42rem;
@@ -759,14 +728,11 @@
   .release { padding: 20px; }
 }
 
-/* 7. Особые режимы */
-
 @media (forced-colors: active) {
   .nnn-browser, .nnn-calc, .ex25-card, .ex54-card, .ex51-card, .ex52-frame, .ex53, .release { border: 1px solid CanvasText; }
 }
 
 @media print {
-  /* Область печати A4 уже 768 px: без этого сцена берёт поля телефона (-16 px) и выходит за колонку */
   .exhibit__stage { margin-inline: 0; padding: 8px 0; border-radius: 0; background: none !important; }
   .exhibit--landing, .exhibit--home, .exhibit--banner, .exhibit--story, .exhibit--release { break-inside: auto; }
   .ex25-card, .ex54-card, .ex51-card, .ex52-slot, .ex53-scene { break-inside: avoid; }
