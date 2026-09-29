@@ -1,0 +1,776 @@
+/* Экспонаты ответа: 2.5 лендинг, 5.1 объявление, 5.2 баннер, 5.3 раскадровка, 5.4 главная, 5.5 пресс-релиз.
+   Рамка и подписи говорят голосом отчёта: токены style.css, у каждого запасное значение.
+   Всё внутри рамок говорит голосом бренда NNN и держит светлую палитру в обеих темах.
+   Префиксы: exhibit общая рамка, nnn- элементы бренда, ex25- лендинг, ex51- объявление,
+   ex52- баннер (полоса .banner-strip), ex53- раскадровка, ex54- главная, release и ph пресс-релиз.
+   Шрифты только системные, внешних запросов нет. */
+
+/* 1. Общая рамка */
+
+.exhibit {
+  --n-bg: #FFFFFF;
+  --n-canvas: #F2F4F7;
+  --n-ink: #0B0D12;
+  --n-muted: #5B6472;
+  --n-line: #E3E7EE;
+  --n-signal: #C6F24E;
+  --n-ok: #067647;
+  --n-r-l: 24px;
+  --n-r-m: 16px;
+  --n-r-s: 10px;
+  --n-font: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --x-text: var(--font-text, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif);
+  --x-display: var(--font-display, Georgia, "Times New Roman", serif);
+  display: block;
+  min-width: 0;
+  margin: 56px 0 0;
+  padding: 0;
+}
+
+.exhibit__label {
+  display: inline-block;
+  max-width: none;
+  margin: 0;
+  padding: 2px 6px;
+  border: 1px solid var(--rule-ui, #8C8677);
+  border-radius: 4px;
+  font: 600 var(--fs-label, .75rem)/1.3 var(--x-text);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted, #5E6573);
+}
+
+/* Свой цвет фокуса только у белых поверхностей NNN: светлый фокус тёмной темы на белом не виден (9.12.0).
+   Сцена и лист пресс-релиза следуют теме, у них фокус темы, иначе в тёмной теме кольцо сливается с фоном. */
+.nnn-browser, .ex51-card, .ex52-frame { --focus: #2340C8; }
+
+.exhibit__stage {
+  min-width: 0;
+  margin-block-start: 10px;
+  padding: clamp(16px, 4vw, 40px);
+  border-radius: 12px;
+  background-color: var(--stage, #EDE9E0);
+  background-image: radial-gradient(var(--stage-dot, #D8D2C4) 1px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+@media (max-width: 767px) {
+  .exhibit__stage { margin-inline: calc(-1 * var(--gutter, 16px)); border-radius: 0; }
+}
+/* число с единицей не рвётся по строкам; символы текста не меняются */
+.exhibit .ex-nw { white-space: nowrap; }
+
+/* 2. Рамка браузера и страница NNN (2.5 и 5.4) */
+
+.nnn-browser {
+  container-type: inline-size;
+  max-width: 1080px;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid rgb(11 13 18 / .12);
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: var(--shadow-2, 0 1px 0 rgb(22 24 29 / .05), 0 18px 40px -20px rgb(22 24 29 / .28));
+  color-scheme: light;
+}
+.nnn-browser__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding-inline: 12px;
+  border-bottom: 1px solid rgb(11 13 18 / .08);
+  background: #EEF0F3;
+}
+.nnn-browser__dots { display: flex; flex: none; gap: 6px; }
+.nnn-browser__dots > span { width: 10px; height: 10px; border-radius: 50%; background: #D0D4DB; }
+.nnn-browser__address {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 560px;
+  height: 28px;
+  margin-inline: auto;
+  padding-inline: 10px;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #3A3F4A;
+  font: 400 13px/1 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+.nnn-browser__lock { flex: none; color: #5B6472; }
+.nnn-browser__url { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+@container (max-width: 479px) { .nnn-browser__dots { display: none; } }
+
+.nnn {
+  color-scheme: light;
+  background: var(--n-bg);
+  color: var(--n-ink);
+  font-family: var(--n-font);
+  font-size: 16px;
+  font-variant-numeric: normal;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: left;
+  hyphens: manual;
+}
+.nnn-top { display: flex; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--n-line); }
+.nnn-logo { display: inline-flex; align-items: center; gap: 6px; font-size: 22px; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+.nnn-logo::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--n-signal);
+  box-shadow: inset 0 0 0 1px rgb(11 13 18 / .14);
+}
+
+.nnn-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "text" "calc" "extra";
+  gap: 20px;
+  padding: 24px 20px 32px;
+}
+.nnn-hero__text { grid-area: text; min-width: 0; }
+.nnn-calc { grid-area: calc; }
+.nnn-hero__extra { grid-area: extra; display: grid; align-content: start; gap: 14px; }
+
+.nnn-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--n-signal);
+  color: var(--n-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.nnn-h1 {
+  margin-top: 16px;
+  font-size: clamp(24px, 3.6cqi, 38px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.nnn-lead {
+  max-width: 34em;
+  margin-top: 14px;
+  color: var(--n-muted);
+  font-size: clamp(16px, 2.2cqi, 18px);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.nnn-mark {
+  background: linear-gradient(transparent 62%, var(--n-signal) 62%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.nnn-stub {
+  text-decoration: underline dashed;
+  text-decoration-color: var(--n-muted);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.nnn-calc {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-r-l);
+  background: #FFFFFF;
+  box-shadow: 0 24px 60px -30px rgb(11 13 18 / .35);
+}
+.nnn-field { display: grid; gap: 2px; }
+.nnn-field__label { color: var(--n-muted); font-size: 13px; line-height: 1.3; }
+.nnn-field__line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 48px;
+  border-bottom: 1px solid var(--n-line);
+}
+.nnn-field__cur {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--n-canvas);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.nnn-rate {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 6px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 999px;
+  background: var(--n-signal);
+  color: var(--n-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.nnn-rate svg { flex: none; }
+.nnn-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding-inline: 24px;
+  border-radius: var(--n-r-m);
+  background: var(--n-ink);
+  color: #FFFFFF;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: default;
+  user-select: none;
+}
+.nnn-more {
+  justify-self: start;
+  color: var(--n-ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: default;
+}
+.nnn-more:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.nnn-trust { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--n-muted); font-size: 14px; line-height: 1.35; }
+.nnn-trust > span { display: inline-flex; align-items: center; gap: 6px; }
+.nnn-trust svg { flex: none; color: var(--n-ok); }
+
+.nnn-screen { padding: 32px 20px 36px; border-top: 1px solid var(--n-line); }
+.nnn-h2 {
+  font-size: clamp(22px, 3cqi, 32px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.nnn-note {
+  margin-top: 24px;
+  padding: 16px 18px;
+  border-radius: var(--n-r-m);
+  background: var(--n-canvas);
+  color: var(--n-ink);
+  font-size: 14px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.nnn-note__lead { font-weight: 700; }
+
+/* Порог 780, не 820 и не 880: на 1280 с обычной полосой прокрутки Windows сцена даёт 815-817 px,
+   а раскладка 1280+ по 9.14 уже в две колонки и три кадра баннера в ряд. На 768 сцена около 640 px. */
+@container (min-width: 780px) {
+  .nnn-top { padding: 20px 48px; }
+  .nnn-hero {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "text calc" "extra calc";
+    column-gap: 48px;
+    row-gap: 28px;
+    align-items: start;
+    padding: 56px 48px 64px;
+  }
+  .nnn-screen { padding: 56px 48px 64px; }
+  .nnn-note { margin-top: 32px; }
+}
+
+/* 2.5: второй экран лендинга */
+
+.ex25-cards { display: grid; gap: 12px; margin-top: 24px; }
+.ex25-card { padding: 24px; border-radius: var(--n-r-l); background: var(--n-canvas); }
+.ex25-card__n {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--n-r-s);
+  background: var(--n-signal);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+.ex25-card__title { margin-top: 16px; font-size: 18px; font-weight: 700; line-height: 1.25; }
+.ex25-card__text { margin-top: 8px; color: var(--n-muted); font-size: 15px; line-height: 1.5; }
+.ex25-steps { margin-top: 32px; }
+.ex25-steps__title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+.ex25-steps__list { display: grid; gap: 12px; margin-top: 14px; }
+.ex25-step { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 15px; line-height: 1.45; }
+.ex25-step__n {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--n-ink);
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+.ex25-step__text { padding-top: 5px; }
+
+@container (min-width: 780px) {
+  .ex25-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+  .ex25-steps { margin-top: 40px; }
+  .ex25-steps__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+}
+
+/* 5.4: главная NNN */
+
+.ex54-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: var(--n-canvas);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.ex54-badge svg { flex: none; color: var(--n-ok); }
+.ex54-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  height: 44px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--n-canvas);
+  font-size: 15px;
+  font-weight: 600;
+}
+.ex54-switch > span { display: grid; place-items: center; border-radius: 9px; color: var(--n-muted); }
+.ex54-switch > .ex54-switch__on {
+  background: #FFFFFF;
+  color: var(--n-ink);
+  box-shadow: 0 1px 2px rgb(22 24 29 / .08), 0 0 0 1px rgb(11 13 18 / .04);
+}
+.ex54-grid { display: grid; gap: 16px; margin-top: 24px; }
+.ex54-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 24px;
+  border-radius: var(--n-r-l);
+  background: var(--n-canvas);
+}
+.ex54-card__title { font-size: 20px; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; }
+.ex54-card__text { max-width: 32em; margin-bottom: 8px; color: var(--n-muted); font-size: 15px; line-height: 1.5; }
+.ex54-card__btn {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  margin-top: auto;
+  padding-inline: 18px;
+  border-radius: 12px;
+  background: var(--n-ink);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: default;
+  user-select: none;
+}
+.ex54-card--big { background: var(--n-ink); color: #FFFFFF; }
+.ex54-card--big .ex54-card__text { color: #AEB4BF; }
+.ex54-card--big .ex54-card__btn { background: var(--n-signal); color: var(--n-ink); }
+
+@container (min-width: 720px) {
+  .ex54-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); margin-top: 32px; }
+  .ex54-card { min-height: 200px; }
+  .ex54-card--buy, .ex54-card--card { grid-column: span 7; }
+  .ex54-card--sell, .ex54-card--big { grid-column: span 5; }
+}
+
+/* 3. Объявление в поиске (5.1) */
+
+.ex51 { display: grid; justify-items: start; gap: 10px; }
+.ex51-group { color: var(--ink-2, #3A3F4A); font: 600 var(--fs-small, .8125rem)/1.4 var(--x-text); }
+.ex51-group--next { margin-top: 22px; }
+.ex51-card {
+  container-type: inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 2px rgb(22 24 29 / .08), 0 12px 32px -18px rgb(22 24 29 / .28);
+  color: #333333;
+  color-scheme: light;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: left;
+  hyphens: manual;
+}
+.ex51-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-items: start; }
+.ex51-url { color: #1F1F1F; font-size: 14px; line-height: 20px; }
+.ex51-url__main { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
+.ex51-fav {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0B0D12;
+  color: #FFFFFF;
+  font: 700 10px/1 Arial, sans-serif;
+}
+.ex51-path { color: #0B6B3A; }
+.ex51-ad { padding: 0 4px; border: 1px solid #C9C9C9; border-radius: 4px; color: #6B6B6B; font-size: 12px; line-height: 16px; }
+.ex51-title { margin-top: 6px; color: #1F2FA8; font-size: 20px; line-height: 1.3; }
+.ex51-title + .ex51-title { margin-top: 2px; }
+.ex51-title__t { cursor: default; }
+.ex51-title:hover .ex51-title__t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.ex51-text { margin-top: 6px; }
+.ex51-ext { margin-top: 4px; font-size: 14px; }
+.ex51-links {
+  position: relative;
+  display: grid;
+  gap: 10px 24px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #ECECEC;
+}
+.ex51-link__a { color: #1F2FA8; font-size: 15px; line-height: 1.3; }
+.ex51-link__d { margin-top: 2px; color: #555555; font-size: 13px; line-height: 1.4; }
+.ex51-vcard { margin-top: 14px; color: #6B6B6B; font-size: 13px; line-height: 1.45; }
+.ex51-ph { text-decoration: underline dashed; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+/* счётчики символов из таблицы ответа: пометка на полях, не часть объявления */
+.ex51-n {
+  justify-self: end;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #EDE9E0;
+  color: #3A3F4A;
+  font: 500 11px/16px var(--x-text);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.ex51-url > .ex51-n { margin-top: 1px; }
+.ex51-title > .ex51-n { margin-top: 4px; }
+.ex51-text > .ex51-n { margin-top: 2px; }
+.ex51-n--block {
+  position: absolute;
+  top: 0;
+  right: 0;
+  box-shadow: 0 0 0 3px #FFFFFF;
+  transform: translateY(-50%);
+}
+@container (min-width: 420px) {
+  .ex51-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 479px) {
+  .ex51-card { padding: 16px; }
+}
+
+/* 4. Баннер 300×600, три кадра без скриптов (5.2).
+   Внутри кадра размеры в долях ширины: 1 единица = 1 px при ширине кадра 300 px. */
+
+.ex52 { container-type: inline-size; }
+.banner-strip {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+.ex52-slot { flex: 0 0 auto; width: 300px; min-width: 0; scroll-snap-align: start; }
+@container (min-width: 780px) {
+  .banner-strip { justify-content: center; overflow-x: visible; scroll-snap-type: none; }
+  .ex52-slot { flex: 1 1 0; width: auto; max-width: 300px; }
+}
+.ex52-tag {
+  margin-bottom: 8px;
+  color: var(--muted, #5E6573);
+  font: 600 var(--fs-label, .75rem)/1.3 var(--x-text);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ex52-frame {
+  --u: calc(100cqi / 300);
+  container-type: inline-size;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 1 / 2;
+  overflow: hidden;
+  border: 1px solid rgb(11 13 18 / .12);
+  background: #FFFFFF;
+  color: var(--n-ink);
+  color-scheme: light;
+  font-family: var(--n-font);
+  line-height: 1.2;
+  text-align: left;
+  hyphens: manual;
+}
+.ex52-frame--night { background: #15171D; color: #F5F6F8; box-shadow: 0 0 0 1px rgb(255 255 255 / .06); }
+/* В тёмной теме сцена почти того же тона, что ночной кадр: край кадра заметнее */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ex52-frame--night { box-shadow: 0 0 0 1px rgb(255 255 255 / .14); }
+}
+:root[data-theme="dark"] .ex52-frame--night { box-shadow: 0 0 0 1px rgb(255 255 255 / .14); }
+.ex52-in { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; padding: calc(24 * var(--u)); }
+.ex52-h { font-weight: 700; letter-spacing: -.02em; text-wrap: pretty; }
+.ex52-h--pain { font-size: calc(30 * var(--u)); line-height: 1.12; }
+.ex52-h--solve { font-size: calc(26 * var(--u)); line-height: 1.15; }
+
+.ex52-phone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: center;
+  box-sizing: border-box;
+  width: calc(150 * var(--u));
+  height: calc(260 * var(--u));
+  margin-block: auto calc(8 * var(--u));
+  padding: calc(16 * var(--u)) calc(6 * var(--u));
+  border: calc(2 * var(--u)) solid #3A3F4A;
+  border-radius: calc(24 * var(--u));
+  background: radial-gradient(120% 80% at 50% 100%, rgb(43 47 56 / .55), transparent 70%);
+}
+.ex52-phone::before {
+  content: "";
+  position: absolute;
+  top: calc(10 * var(--u));
+  left: 50%;
+  width: calc(40 * var(--u));
+  height: calc(6 * var(--u));
+  border-radius: 99px;
+  background: #3A3F4A;
+  transform: translateX(-50%);
+}
+.ex52-bubble {
+  align-self: flex-end;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: calc(7 * var(--u)) calc(8 * var(--u));
+  border-radius: calc(14 * var(--u)) calc(14 * var(--u)) calc(4 * var(--u)) calc(14 * var(--u));
+  background: #2B2F38;
+  color: #F5F6F8;
+  font-size: calc(13 * var(--u));
+  line-height: 1.3;
+}
+.ex52-ticks { display: inline-block; width: calc(15 * var(--u)); height: auto; margin-left: calc(4 * var(--u)); color: #8A909B; vertical-align: middle; }
+
+.ex52-sub { margin-top: calc(12 * var(--u)); font-size: calc(18 * var(--u)); font-weight: 600; line-height: 1.3; }
+.ex52-calc {
+  display: grid;
+  gap: calc(4 * var(--u));
+  margin-top: auto;
+  padding: calc(16 * var(--u));
+  border: 1px solid var(--n-line);
+  border-radius: calc(16 * var(--u));
+  background: #FFFFFF;
+  box-shadow: 0 calc(18 * var(--u)) calc(40 * var(--u)) calc(-24 * var(--u)) rgb(11 13 18 / .35);
+}
+.ex52-calc__brand {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: calc(4 * var(--u));
+  margin-bottom: calc(8 * var(--u));
+  font-size: calc(15 * var(--u));
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+.ex52-calc__brand::after {
+  content: "";
+  width: calc(6 * var(--u));
+  height: calc(6 * var(--u));
+  border-radius: 50%;
+  background: var(--n-signal);
+  box-shadow: inset 0 0 0 1px rgb(11 13 18 / .14);
+}
+.ex52-calc__label { color: var(--n-muted); font-size: calc(12 * var(--u)); }
+.ex52-calc__line { height: calc(30 * var(--u)); margin-bottom: calc(10 * var(--u)); border-bottom: 1px solid var(--n-line); }
+.ex52-calc__rate {
+  justify-self: start;
+  padding: calc(4 * var(--u)) calc(10 * var(--u));
+  border-radius: 999px;
+  background: var(--n-signal);
+  font-size: calc(12 * var(--u));
+  font-weight: 600;
+}
+
+.ex52-in--act { justify-content: center; align-items: flex-start; gap: calc(14 * var(--u)); }
+.ex52-logo { font-size: calc(56 * var(--u)); font-weight: 700; line-height: 1; letter-spacing: -.03em; }
+.ex52-slogan { font-size: calc(24 * var(--u)); font-weight: 700; line-height: 1.2; }
+.ex52-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(48 * var(--u));
+  margin-top: calc(10 * var(--u));
+  padding-inline: calc(28 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: var(--n-ink);
+  color: #FFFFFF;
+  font-size: calc(16 * var(--u));
+  font-weight: 700;
+  cursor: default;
+}
+.ex52-legal {
+  flex: none;
+  padding: calc(12 * var(--u)) calc(16 * var(--u)) calc(14 * var(--u));
+  background: var(--n-canvas);
+  color: var(--n-muted);
+  font-size: calc(9 * var(--u));
+  line-height: 1.3;
+}
+
+/* 5. Раскадровка ролика, шкала 30 секунд (5.3) */
+
+.ex53 {
+  container-type: inline-size;
+  padding: clamp(16px, 3vw, 28px);
+  border-radius: 8px;
+  background: var(--bg-raised, #FFFFFF);
+  box-shadow: var(--shadow-1, 0 1px 2px rgb(22 24 29 / .08));
+  color: var(--ink, #16181D);
+  font-family: var(--x-text);
+  hyphens: manual;
+}
+.ex53-scale { position: relative; padding-bottom: 24px; }
+.ex53-bar { display: grid; grid-template-columns: 4fr 3fr 10fr 8fr 5fr; gap: 2px; height: 8px; }
+.ex53-bar > span { background: var(--rule-ui, #8C8677); }
+.ex53-bar > span:first-child { border-radius: 4px 0 0 4px; }
+.ex53-bar > span:last-child { border-radius: 0 4px 4px 0; }
+.ex53-ticks {
+  position: absolute;
+  top: 14px;
+  right: 0;
+  left: 0;
+  height: 16px;
+  color: var(--muted, #5E6573);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+}
+.ex53-ticks > span { position: absolute; top: 0; white-space: nowrap; transform: translateX(-50%); }
+.ex53-ticks > span:nth-child(1) { left: 0; transform: none; }
+.ex53-ticks > span:nth-child(2) { left: 16.6667%; }
+.ex53-ticks > span:nth-child(3) { left: 33.3333%; }
+.ex53-ticks > span:nth-child(4) { left: 50%; }
+.ex53-ticks > span:nth-child(5) { left: 66.6667%; }
+.ex53-ticks > span:nth-child(6) { left: 83.3333%; }
+.ex53-ticks > span:nth-child(7) { left: 100%; transform: translateX(-100%); }
+
+.ex53-scenes { margin-top: 12px; }
+.ex53-scene {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "time" "thumb" "frame" "voice";
+  gap: 10px 20px;
+  align-items: start;
+  padding-block: 20px;
+  border-top: 1px solid var(--rule, #D8D2C4);
+}
+.ex53-scene:last-child { padding-bottom: 4px; }
+.ex53-time { grid-area: time; display: flex; align-items: baseline; gap: 10px; }
+.ex53-time__range { color: var(--ink, #16181D); font-size: 15px; font-variant-numeric: tabular-nums lining-nums; font-weight: 600; white-space: nowrap; }
+.ex53-time__dur { color: var(--muted, #5E6573); font-size: 13px; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+.ex53-thumb { grid-area: thumb; width: 176px; max-width: 100%; line-height: 0; }
+.ex53-thumb svg { display: block; box-sizing: border-box; width: 100%; height: auto; border-radius: 6px; }
+.ex53-thumb--day svg { border: 1px solid #E3E7EE; }
+.ex53-frame { grid-area: frame; color: var(--ink-2, #3A3F4A); font-size: 15px; line-height: 1.5; }
+.ex53-voice { grid-area: voice; color: var(--ink, #16181D); font-family: var(--x-display); font-size: 18px; line-height: 1.45; }
+.ex53-voice::before { content: "«"; }
+.ex53-voice::after { content: "»"; }
+
+@container (min-width: 480px) {
+  .ex53-scene {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "time time" "thumb thumb" "frame voice";
+  }
+}
+@container (min-width: 720px) {
+  .ex53-scene {
+    grid-template-columns: 96px 176px minmax(0, .9fr) minmax(0, 1.1fr);
+    grid-template-areas: "time thumb frame voice";
+  }
+  .ex53-time { flex-direction: column; gap: 2px; }
+}
+
+/* 6. Лист пресс-релиза (5.5). Текст внутри - текст ответа, меняется только оформление. */
+
+.release {
+  box-sizing: border-box;
+  max-width: 42rem;
+  margin-inline: auto;
+  padding: 40px;
+  border-radius: 2px;
+  background: var(--bg-raised, #FFFFFF);
+  box-shadow: var(--shadow-2, 0 1px 0 rgb(22 24 29 / .05), 0 18px 40px -20px rgb(22 24 29 / .28));
+  color: var(--ink, #16181D);
+}
+.release > :first-child { margin-top: 0; }
+.release > p:first-child {
+  max-width: none;
+  margin-top: 0;
+  color: var(--ink, #16181D);
+  font-family: var(--x-display);
+  font-size: clamp(22px, 1.2rem + 1vw, 28px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.release > p:first-child strong { font-weight: inherit; }
+.release > p:nth-child(2) {
+  max-width: none;
+  margin-top: 12px;
+  color: var(--ink-2, #3A3F4A);
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.45;
+}
+.release details.fold > p:nth-of-type(2) {
+  color: var(--ink, #16181D);
+  font-family: var(--x-display);
+  font-size: 20px;
+  line-height: 1.45;
+}
+.release .ph {
+  padding: 0 3px;
+  border: 1px dashed var(--warn-mark, #E0A100);
+  border-radius: 4px;
+  background: var(--warn-wash, #FCEFD6);
+  color: var(--warn, #8A5300);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+@media (max-width: 767px) {
+  .release { padding: 20px; }
+}
+
+/* 7. Особые режимы */
+
+@media (forced-colors: active) {
+  .nnn-browser, .nnn-calc, .ex25-card, .ex54-card, .ex51-card, .ex52-frame, .ex53, .release { border: 1px solid CanvasText; }
+}
+
+@media print {
+  /* Область печати A4 уже 768 px: без этого сцена берёт поля телефона (-16 px) и выходит за колонку */
+  .exhibit__stage { margin-inline: 0; padding: 8px 0; border-radius: 0; background: none !important; }
+  .exhibit--landing, .exhibit--home, .exhibit--banner, .exhibit--story, .exhibit--release { break-inside: auto; }
+  .ex25-card, .ex54-card, .ex51-card, .ex52-slot, .ex53-scene { break-inside: avoid; }
+  .banner-strip { flex-wrap: wrap; overflow: visible; }
+  .nnn-browser, .ex51-card, .ex53, .release { box-shadow: none; }
+  .release { max-width: none; padding: 0; }
+}
